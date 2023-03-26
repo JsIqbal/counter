@@ -1,62 +1,54 @@
-import React, { Component } from 'react';
-import Box from './Box.component';
+import { useState } from "react";
+import Box from "./Box.component";
 
-class App extends Component{
-    state = {
-        arra: [1,2,3]
-    }
+function App() {
+    const [state, setState] = useState([1, 2, 3]);
 
-    onIncremeant = (id) => {
-        const arr = [...this.state.arra];
+    const onIncremeant = (id) => {
+        const arr = [...state];
         arr[id]++;
-        this.setState({arra : arr});
-    }
+        setState(arr);
+    };
 
-    onDecremeant = (id) => {
-        const arr = [...this.state.arra];
+    const onDecremeant = (id) => {
+        const arr = [...state];
         arr[id]--;
-        this.setState({arra : arr});
-    }
+        setState(arr);
+    };
 
-    createBox = () => {
-        const { arra } = this.state;
-        this.setState({arra: [...arra, 0]});
-    }
+    const createBox = () => {
+        setState([...state, 0]);
+    };
 
-    onDelete = (id) => {
+    const onDelete = (id) => {
         function filterArra(number, index) {
             if (id === index) return false;
             else return true;
         }
 
-        const updatedArra = this.state.arra.filter(filterArra);
-        this.setState({arra : updatedArra});
-    }
+        const updatedArra = state.filter(filterArra);
+        setState(updatedArra);
+    };
 
-    render() {
-        return (
-            <div className='col-lg-6 me-auto ms-auto text-center mt-4'>
-                <button className='btn btn-primary' onClick={this.createBox}>Add Box</button>
-                {
-                    (
-                        () =>this.state.arra.map(
-                            (number, index) =>(
-                                <div key = {index} className='singlebox'>
-                                    <Box
-                                        number = {number}
-                                        id = {index}
-                                        onIncremeant = {this.onIncremeant}
-                                        onDecremeant = {this.onDecremeant}
-                                        onDelete = {this.onDelete}
-                                    />
-                                </div>
-                            )  
-                        )
-                    )()
-                }
-            </div>
-        );
-    }
+    return (
+        <div className="col-lg-6 me-auto ms-auto text-center mt-4">
+            <button className="btn btn-primary" onClick={createBox}>
+                Add Box
+            </button>
+            {(() =>
+                state.map((number, index) => (
+                    <div key={index} className="singlebox">
+                        <Box
+                            number={number}
+                            id={index}
+                            onIncremeant={onIncremeant}
+                            onDecremeant={onDecremeant}
+                            onDelete={onDelete}
+                        />
+                    </div>
+                )))()}
+        </div>
+    );
 }
 
 export default App;
